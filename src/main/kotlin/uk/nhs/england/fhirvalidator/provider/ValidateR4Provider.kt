@@ -178,11 +178,12 @@ class ValidateR4Provider (
                             inputResource.type == Bundle.BundleType.TRANSACTION ||
                             inputResource.type == Bundle.BundleType.COLLECTION
                     )) {
-            val bundleEntries = inputResource.entry
-                .map { it }
-            val bundleResources = bundleEntries.map { it.resource }
-            if (bundleResources.all { it.resourceType == ResourceType.Bundle }) {
-                return bundleResources
+            val bundleEntries = inputResource.entry.map { it }
+            if (bundleEntries.any { it.resource }) {
+                val bundleResources = bundleEntries.map { it.resource }
+                if (bundleResources.all { it.resourceType == ResourceType.Bundle }) {
+                    return bundleResources
+                }
             }
         }
 
