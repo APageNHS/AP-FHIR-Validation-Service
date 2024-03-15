@@ -179,7 +179,7 @@ class ValidateR4Provider (
                             inputResource.type == Bundle.BundleType.COLLECTION
                     )) {
             val bundleEntries = inputResource.entry.map { it }
-            if (bundleEntries.any { it.resource.isNotEmpty() }) {
+            if (bundleEntries.any { it.resource is IBaseResource }) {
                 val bundleResources = bundleEntries.map { it.resource }
                 if (bundleResources.all { it.resourceType == ResourceType.Bundle }) {
                     return bundleResources
