@@ -23,16 +23,14 @@ fun getResourcesOfType(resource: IBaseResource, resourceType: String?): List<IBa
 
 fun applyProfile(resources: List<IBaseResource>, profile: String, clearProfiles: Boolean?) {
     resources.stream().forEach {
-        if (clearProfiles !== null && clearProfiles) {
-             it.meta.profile.clear()
-        }
-        
-        var found = false
-        it.meta.profile.forEach {
-            if (it.value.equals(profile)) found = true
-        }
-        if (!found) {
-            it.meta.addProfile(profile)
+        if (it.meta.profile.count() = 0) {
+            var found = false
+            it.meta.profile.forEach {
+                if (it.value.equals(profile)) found = true
+            }
+            if (!found) {
+                it.meta.addProfile(profile)
+            }
         }
     }
 }
