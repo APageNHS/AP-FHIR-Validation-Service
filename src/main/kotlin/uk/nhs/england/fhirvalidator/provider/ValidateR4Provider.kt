@@ -203,80 +203,13 @@ class ValidateR4Provider (
             result = validator.validateWithResult(resource, ValidationOptions().addProfile(profile))
                 .toOperationOutcome() as? OperationOutcome
         } else {
-            if (resource is Bundle) {
-                val bundleEntries = resource.entry.map { it }
-                if (bundleEntries.any { it.resource is IBaseResource }) {
-                    val bundleResources = bundleEntries.map { it.resource }
-                    bundleResources.forEach{
-                        additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
-                                .setSeverity(OperationOutcome.IssueSeverity.ERROR)
-                                .setCode(OperationOutcome.IssueType.INFORMATIONAL)
-                                .setDiagnostics("Before ${it.id} has:")
-                            )
-                        it.meta.profile.forEach{
-                            additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
-                                .setSeverity(OperationOutcome.IssueSeverity.ERROR)
-                                .setCode(OperationOutcome.IssueType.INFORMATIONAL)
-                                .setDiagnostics("meta.profile ${it.value}")
-                            )
-                        }
-                    }
-                }
-            }
-        
             capabilityStatementApplier.applyCapabilityStatementProfiles(resource, importProfile)
-            
-            if (resource is Bundle) {
-                val bundleEntries = resource.entry.map { it }
-                if (bundleEntries.any { it.resource is IBaseResource }) {
-                    val bundleResources = bundleEntries.map { it.resource }
-                    bundleResources.forEach{
-                        additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
-                                .setSeverity(OperationOutcome.IssueSeverity.ERROR)
-                                .setCode(OperationOutcome.IssueType.INFORMATIONAL)
-                                .setDiagnostics("After Capability ${it.id} has:")
-                            )
-                        it.meta.profile.forEach{
-                            additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
-                                .setSeverity(OperationOutcome.IssueSeverity.ERROR)
-                                .setCode(OperationOutcome.IssueType.INFORMATIONAL)
-                                .setDiagnostics("meta.profile ${it.value}")
-                            )
-                        }
-                    }
-                }
-            }
-            
             val messageDefinitionErrors = fhirMessage.applyMessageDefinition(resource)
             if (messageDefinitionErrors != null) {
                 messageDefinitionErrors.issue.forEach{
                     additionalIssues.add(it)
                 }
             }
-
-
-            if (resource is Bundle) {
-                val bundleEntries = resource.entry.map { it }
-                if (bundleEntries.any { it.resource is IBaseResource }) {
-                    val bundleResources = bundleEntries.map { it.resource }
-                    bundleResources.forEach{
-                        additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
-                                .setSeverity(OperationOutcome.IssueSeverity.ERROR)
-                                .setCode(OperationOutcome.IssueType.INFORMATIONAL)
-                                .setDiagnostics("After MessageDef ${it.id} has:")
-                            )
-                        it.meta.profile.forEach{
-                            additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
-                                .setSeverity(OperationOutcome.IssueSeverity.ERROR)
-                                .setCode(OperationOutcome.IssueType.INFORMATIONAL)
-                                .setDiagnostics("meta.profile ${it.value}")
-                            )
-                        }
-                    }
-                }
-            }
-            
-            
             if (importProfile !== null && importProfile && resource is Bundle) fhirDocumentApplier.applyDocumentDefinition(resource)
             result = validator.validateWithResult(fhirContext.newJsonParser().setPrettyPrint(true).encodeResourceToString(resource)).toOperationOutcome() as? OperationOutcome
         }
