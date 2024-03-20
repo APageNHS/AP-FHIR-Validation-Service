@@ -207,7 +207,7 @@ class ValidateR4Provider (
             val messageDefinitionErrors = fhirMessage.applyMessageDefinition(resource)
             if (messageDefinitionErrors != null) {
                 messageDefinitionErrors.issue.forEach{
-                    additionalIssues.add(it)
+                    /* additionalIssues.add(it) */
                 }
             }
             if (importProfile !== null && importProfile && resource is Bundle) fhirDocumentApplier.applyDocumentDefinition(resource)
