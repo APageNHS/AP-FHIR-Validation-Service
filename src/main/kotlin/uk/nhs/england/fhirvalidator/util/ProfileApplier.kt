@@ -27,6 +27,10 @@ fun applyProfile(resources: List<IBaseResource>, profile: String) {
         it.meta.profile.forEach {
             if (it.value.equals(profile)) found = true
         }
-        if (!found) it.meta.addProfile(profile)
+        if (!found) {
+            
+                logger.error("applyProfile " + profile)
+            it.meta.addProfile(profile)
+        }
     }
 }
