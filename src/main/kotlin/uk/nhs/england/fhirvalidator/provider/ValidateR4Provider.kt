@@ -198,12 +198,35 @@ class ValidateR4Provider (
             }
         }
         if (profile != null) {
+additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
+                    .setSeverity(OperationOutcome.IssueSeverity.INFORMATION)
+                    .setCode(OperationOutcome.IssueType.INFORMATIONAL)
+                    .setDiagnostics("profile set ${profile}")
+                )
+            
             if (importProfile !== null && importProfile) capabilityStatementApplier.applyCapabilityStatementProfiles(resource, importProfile)
             if (importProfile !== null && importProfile && resource is Bundle) fhirDocumentApplier.applyDocumentDefinition(resource)
             result = validator.validateWithResult(resource, ValidationOptions().addProfile(profile))
                 .toOperationOutcome() as? OperationOutcome
         } else {
+            
+additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
+                    .setSeverity(OperationOutcome.IssueSeverity.INFORMATION)
+                    .setCode(OperationOutcome.IssueType.INFORMATIONAL)
+                    .setDiagnostics("no profile set, importProfile is ${importProfile}")
+                )
+
             capabilityStatementApplier.applyCapabilityStatementProfiles(resource, importProfile)
+resource.meta.profile.forEach {
+            
+additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
+                    .setSeverity(OperationOutcome.IssueSeverity.INFORMATION)
+                    .setCode(OperationOutcome.IssueType.INFORMATIONAL)
+                    .setDiagnostics("resource.meta.profile ${it.value}")
+                )
+        }
+
+            
             val messageDefinitionErrors = fhirMessage.applyMessageDefinition(resource)
             if (messageDefinitionErrors != null) {
                 messageDefinitionErrors.issue.forEach{
