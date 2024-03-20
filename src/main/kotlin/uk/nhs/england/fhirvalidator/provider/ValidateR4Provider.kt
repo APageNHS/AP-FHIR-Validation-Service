@@ -199,7 +199,7 @@ class ValidateR4Provider (
         }
         if (profile != null) {
 additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
-                    .setSeverity(OperationOutcome.IssueSeverity.INFORMATION)
+                    .setSeverity(OperationOutcome.IssueSeverity.ERROR)
                     .setCode(OperationOutcome.IssueType.INFORMATIONAL)
                     .setDiagnostics("profile set ${profile}")
                 )
@@ -211,7 +211,7 @@ additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
         } else {
             
 additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
-                    .setSeverity(OperationOutcome.IssueSeverity.INFORMATION)
+                    .setSeverity(OperationOutcome.IssueSeverity.ERROR)
                     .setCode(OperationOutcome.IssueType.INFORMATIONAL)
                     .setDiagnostics("no profile set, importProfile is ${importProfile}")
                 )
@@ -220,7 +220,7 @@ additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
 resource.meta.profile.forEach {
             
 additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
-                    .setSeverity(OperationOutcome.IssueSeverity.INFORMATION)
+                    .setSeverity(OperationOutcome.IssueSeverity.ERROR)
                     .setCode(OperationOutcome.IssueType.INFORMATIONAL)
                     .setDiagnostics("resource.meta.profile ${it.value}")
                 )
