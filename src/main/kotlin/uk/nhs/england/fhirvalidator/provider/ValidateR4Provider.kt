@@ -216,20 +216,20 @@ class ValidateR4Provider (
                 val bundleEntries = resource.entry.map { it }
                 if (bundleEntries.any { it.resource is IBaseResource }) {
                     val bundleResources = bundleEntries.map { it.resource }
-                    bundleResources.forEach (
+                    bundleResources.forEach{
                         additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
                                 .setSeverity(OperationOutcome.IssueSeverity.ERROR)
                                 .setCode(OperationOutcome.IssueType.INFORMATIONAL)
                                 .setDiagnostics("${it.id} has:")
                             )
-                        it.meta.profile.forEach(
+                        it.meta.profile.forEach{
                             additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
                                 .setSeverity(OperationOutcome.IssueSeverity.ERROR)
                                 .setCode(OperationOutcome.IssueType.INFORMATIONAL)
                                 .setDiagnostics("meta.profile ${it.value}")
                             )
-                        )
-                    )
+                        }
+                    }
                 }
             }
             
