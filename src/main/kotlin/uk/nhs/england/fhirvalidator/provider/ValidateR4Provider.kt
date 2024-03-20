@@ -212,8 +212,8 @@ class ValidateR4Provider (
             }
 
 
-            if (inputResource is Bundle) {
-                val bundleEntries = inputResource.entry.map { it }
+            if (resource is Bundle) {
+                val bundleEntries = resource.entry.map { it }
                 if (bundleEntries.any { it.resource is IBaseResource }) {
                     val bundleResources = bundleEntries.map { it.resource }
                     bundleResources.forEach (
