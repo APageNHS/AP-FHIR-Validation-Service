@@ -29,7 +29,7 @@ fun applyProfile(resources: List<IBaseResource>, profile: String) {
         }
         if (!found) {
             
-                logger.error("applyProfile " + profile)
+        System.out.println("applyProfile " + profile)
             it.meta.addProfile(profile)
         }
     }
