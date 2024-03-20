@@ -30,7 +30,6 @@ class CapabilityStatementApplier(
         restResources?.forEach {
             if (it.type !== null && it.type.equals(resourceType) && it.hasProfile()) {
                 profile = it.profile
-                System.out.println("getProfile " + profile)
             }
 
         }
@@ -43,8 +42,7 @@ class CapabilityStatementApplier(
     ) {
         val matchingResources = getResourcesOfType(resource, restResource.type)
         if (restResource.hasProfile()) {
-                System.out.println("applyRestResource " + restResource.profile)
-            applyProfile(matchingResources, restResource.profile)
+            applyProfile(matchingResources, restResource.profile, false)
         }
         if (importProfile !== null && importProfile && restResource.hasExtension()) {
             restResource.extension.forEach{
@@ -52,7 +50,7 @@ class CapabilityStatementApplier(
                     && it.url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-imposeProfile")
                     && it.hasValue() && it.value is CanonicalType) {
                         val canonicalType =  it.value as CanonicalType
-                        applyProfile(matchingResources, canonicalType.value)
+                        applyProfile(matchingResources, canonicalType.value, false)
                 }
             }
 
