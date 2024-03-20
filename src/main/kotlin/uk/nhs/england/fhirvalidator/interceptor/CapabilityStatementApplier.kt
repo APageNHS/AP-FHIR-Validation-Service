@@ -30,6 +30,7 @@ class CapabilityStatementApplier(
         restResources?.forEach {
             if (it.type !== null && it.type.equals(resourceType) && it.hasProfile()) {
                 profile = it.profile
+                logger.error("getProfile " + profile)
             }
 
         }
@@ -42,6 +43,7 @@ class CapabilityStatementApplier(
     ) {
         val matchingResources = getResourcesOfType(resource, restResource.type)
         if (restResource.hasProfile()) {
+                logger.error("applyRestResource " + restResource.profile)
             applyProfile(matchingResources, restResource.profile)
         }
         if (importProfile !== null && importProfile && restResource.hasExtension()) {
