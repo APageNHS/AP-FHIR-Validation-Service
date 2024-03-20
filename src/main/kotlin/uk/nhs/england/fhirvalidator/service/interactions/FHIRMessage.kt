@@ -41,7 +41,7 @@ class FHIRMessage(
             )
 
             return createOperationOutcome(
-                "For message type ${messageType.system}#${messageType.code}#$(messageDefinitionProfile), we found definition $(messageDefinition.id)#$(messageDefinition.url)",
+                "For message type ${messageType.system}#${messageType.code} @ ${messageDefinitionProfile}, we found definition ${messageDefinition.id} @ ${messageDefinition.url}",
                 "MessageHeader.eventCoding"
             )
             
