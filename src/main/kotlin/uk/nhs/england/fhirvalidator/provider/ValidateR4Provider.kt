@@ -203,13 +203,15 @@ class ValidateR4Provider (
             result = validator.validateWithResult(resource, ValidationOptions().addProfile(profile))
                 .toOperationOutcome() as? OperationOutcome
         } else {
-            capabilityStatementApplier.applyCapabilityStatementProfiles(resource, importProfile)
+            /* Logic is: Use meta.profile if exists, if not, apply MessageDefintion profile if it is a Bundle/Message, if not, apply CapabilityStatement */
             val messageDefinitionErrors = fhirMessage.applyMessageDefinition(resource)
             if (messageDefinitionErrors != null) {
                 messageDefinitionErrors.issue.forEach{
                     additionalIssues.add(it)
                 }
             }
+            capabilityStatementApplier.applyCapabilityStatementProfiles(resource, importProfile)
+            
             if (importProfile !== null && importProfile && resource is Bundle) fhirDocumentApplier.applyDocumentDefinition(resource)
             result = validator.validateWithResult(fhirContext.newJsonParser().setPrettyPrint(true).encodeResourceToString(resource)).toOperationOutcome() as? OperationOutcome
         }
