@@ -88,7 +88,7 @@ class FHIRMessage(
         matchingResources: List<IBaseResource>
     ) {
         if (focus.hasProfile()) {
-            applyProfile(matchingResources, focus.profile)
+            applyProfile(matchingResources, focus.profile, true)
         }
     }
 
