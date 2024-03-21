@@ -212,6 +212,26 @@ class ValidateR4Provider (
             }
             capabilityStatementApplier.applyCapabilityStatementProfiles(resource, importProfile)
             
+            if (resource is Bundle) {
+                val bundleEntries = resource.entry.map { it }
+                if (bundleEntries.any { it.resource is IBaseResource }) {
+                    val bundleResources = bundleEntries.map { it.resource }
+                    bundleResources.forEach{
+                        additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
+                                .setSeverity(OperationOutcome.IssueSeverity.ERROR)
+                                .setCode(OperationOutcome.IssueType.INFORMATIONAL)
+                                .setDiagnostics("After ${it.id} has:")
+                            )
+                        it.meta.profile.forEach{
+                            additionalIssues.add(OperationOutcome.OperationOutcomeIssueComponent()
+                                .setSeverity(OperationOutcome.IssueSeverity.ERROR)
+                                .setCode(OperationOutcome.IssueType.INFORMATIONAL)
+                                .setDiagnostics("meta.profile ${it.value}")
+                            )
+                        }
+                    }
+                }
+            }
             if (importProfile !== null && importProfile && resource is Bundle) fhirDocumentApplier.applyDocumentDefinition(resource)
             result = validator.validateWithResult(fhirContext.newJsonParser().setPrettyPrint(true).encodeResourceToString(resource)).toOperationOutcome() as? OperationOutcome
         }
